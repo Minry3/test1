@@ -29,7 +29,7 @@ public class Voiture {
     public void setMarque(String marque) {
         this.marque = marque;
     }
-
+    
     public int getPrix() {
         return prix;
     }
