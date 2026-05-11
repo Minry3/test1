@@ -11,7 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.annotation.DirtiesContext;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class WebTestsSansMock {
 
     @Autowired
@@ -26,6 +28,9 @@ class WebTestsSansMock {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private Voiture voiture;
 
@@ -45,5 +50,22 @@ class WebTestsSansMock {
 	        jsonPath("$.nombreDeVoitures").value(1),
             jsonPath("$.prixMoyen").value(20000)
         );
+    }
+
+    @Test
+    public void recupererStatistiquesLanceExceptionSansMock()
+    {
+        mockMvc.perform(get("/statistique")).andExpect(
+            status().isInternalServerError()
+        );
+    }
+
+    @Test
+    public void creerUneVoitureSansMock()
+    {
+        mockMvc.perform(post("/voiture")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(objectMapper.writeValueAsString(this.voiture)))
+               .andExpect(status().isOk());
     }
 }
