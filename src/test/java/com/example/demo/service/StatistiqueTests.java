@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.data.Voiture;
 import com.example.demo.data.Echantillon;
+import com.example.demo.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +22,7 @@ public class StatistiqueTests {
     @BeforeEach
     public void init()
     {
-        this.statistiqueImpl = new statistiqueImpl();
+        this.statistiqueImpl = new StatistiqueImpl();
         this.voiture = new Voiture("Audi", 20000);
     }
 
