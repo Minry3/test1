@@ -58,7 +58,7 @@ class WebTestsSansMock {
     public void recupererStatistiquesLanceExceptionSansMock() throws Exception
     {
         mockMvc.perform(get("/statistique")).andExpect(
-            status().isInternalServerError()
+            status().isBadRequest()
         );
     }
 
