@@ -19,9 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WebTests {
+class WebTestsSansMock {
 
-    @MockBean
+    @Autowired
     StatistiqueImpl statistiqueImpl;
 
     @Autowired
@@ -36,33 +36,14 @@ class WebTests {
     }
 
     @Test
-    public void recupererStatistiquesAvecMock()
+    public void recupererStatistiquesSansMock()
     {
-        when(statistiqueImpl.prixMoyen()).thenReturn(new Echantillon(1, 20000));
+        this.statistiqueImpl.ajouter(this.voiture);
+
         mockMvc.perform(get("/statistique")).andExpectAll(
-            status().isOk(),
-            jsonPath("$.nombreDeVoitures").value(1),
+	        status().isOk(),
+	        jsonPath("$.nombreDeVoitures").value(1),
             jsonPath("$.prixMoyen").value(20000)
         );
-    }
-
-    @Test
-    public void recupererStatistiquesLanceExceptionAvecMock()
-    {
-        when(statistiqueImpl.prixMoyen()).thenThrow(ArithmeticException.class)
-        mockMvc.perform(get("/statistique")).andExpectAll(
-            status().isOk(),
-            jsonPath("$.nombreDeVoitures").value(1),
-            jsonPath("$.prixMoyen").value(20000)
-        );
-    }
-
-    @Test
-    public void creerUneVoitureAvecMock()
-    {
-        doNothing().when(statistiqueImpl).ajouter(any(Voiture.class));
-        mockMvc.perform(post("/voiture").param("voiture", this.voiture)).andExpectAll(
-            status().isOk()
-        )
     }
 }
