@@ -1,17 +1,51 @@
 package com.example.demo.service;
 
 import com.example.demo.data.Voiture;
+import com.example.demo.data.Echantillon;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 
 
 @SpringBootTest
 public class StatistiqueTests {
 
-    @MockBean
-    StatistiqueImpl statistiqueImpl;
+    private StatistiqueImpl statistiqueImpl;
+    private Voiture voiture;
 
+    @BeforeEach
+    public void init()
+    {
+        this.statistiqueImpl = new statistiqueImpl();
+        this.voiture = new Voiture("Audi", 20000);
+    }
+
+    @Test
+    public void prixMoyenLanceUneException()
+    {
+        assertThrows(ArithmeticException.class, ()->statistiqueImpl.prixMoyen());
+    }
+
+    @Test
+    public void ajouterUneVoiture()
+    {
+        statistiqueImpl.ajouter(this.voiture);
+        assertNotNull(statistiqueImpl.voitures);
+        assertEquals(this.voiture, statistiqueImpl.voitures.get(0));
+    }
+
+    @Test
+    public void retourneLePrixMoyen()
+    {
+        statistiqueImpl.ajouter(this.voiture);
+        Echantillon resultat = statistiqueImpl.prixMoyen();
+
+        assertNotNull(resultat);
+        assertEquals(new Echantillon(1, 20000), resultat);
+    }
 }
