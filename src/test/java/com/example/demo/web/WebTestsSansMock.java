@@ -11,7 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.annotation.DirtiesContext;
 import org.junit.jupiter.api.BeforeEach;
 
 import static org.mockito.Mockito.*;
@@ -21,9 +22,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WebTests {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+class WebTestsSansMock {
 
-    @MockBean
+    @Autowired
     StatistiqueImpl statistiqueImpl;
 
     @Autowired
@@ -41,31 +43,28 @@ class WebTests {
     }
 
     @Test
-    public void recupererStatistiquesAvecMock() throws Exception
+    public void recupererStatistiquesSansMock() throws Exception
     {
-        when(statistiqueImpl.prixMoyen()).thenReturn(new Echantillon(1, 20000));
+        this.statistiqueImpl.ajouter(this.voiture);
+
         mockMvc.perform(get("/statistique")).andExpectAll(
-            status().isOk(),
-            jsonPath("$.nombreDeVoitures").value(1),
+	        status().isOk(),
+	        jsonPath("$.nombreDeVoitures").value(1),
             jsonPath("$.prixMoyen").value(20000)
         );
     }
 
     @Test
-    public void recupererStatistiquesLanceExceptionAvecMock() throws Exception
+    public void recupererStatistiquesLanceExceptionSansMock() throws Exception
     {
-        when(statistiqueImpl.prixMoyen()).thenThrow(ArithmeticException.class);
-
         mockMvc.perform(get("/statistique")).andExpect(
             status().isBadRequest()
         );
     }
 
     @Test
-    public void creerUneVoitureAvecMock() throws Exception
+    public void creerUneVoitureSansMock() throws Exception
     {
-        doNothing().when(statistiqueImpl).ajouter(any(Voiture.class));
-
         mockMvc.perform(post("/voiture")
                .contentType(MediaType.APPLICATION_JSON)
                .content(objectMapper.writeValueAsString(this.voiture)))
