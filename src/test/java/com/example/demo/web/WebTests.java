@@ -41,7 +41,7 @@ class WebTests {
     }
 
     @Test
-    public void recupererStatistiquesAvecMock()
+    public void recupererStatistiquesAvecMock() throws Exception
     {
         when(statistiqueImpl.prixMoyen()).thenReturn(new Echantillon(1, 20000));
         mockMvc.perform(get("/statistique")).andExpectAll(
@@ -52,7 +52,7 @@ class WebTests {
     }
 
     @Test
-    public void recupererStatistiquesLanceExceptionAvecMock()
+    public void recupererStatistiquesLanceExceptionAvecMock() throws Exception
     {
         when(statistiqueImpl.prixMoyen()).thenThrow(ArithmeticException.class);
 
@@ -62,7 +62,7 @@ class WebTests {
     }
 
     @Test
-    public void creerUneVoitureAvecMock()
+    public void creerUneVoitureAvecMock() throws Exception
     {
         doNothing().when(statistiqueImpl).ajouter(any(Voiture.class));
 

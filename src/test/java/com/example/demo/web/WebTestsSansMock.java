@@ -43,7 +43,7 @@ class WebTestsSansMock {
     }
 
     @Test
-    public void recupererStatistiquesSansMock()
+    public void recupererStatistiquesSansMock() throws Exception
     {
         this.statistiqueImpl.ajouter(this.voiture);
 
@@ -55,7 +55,7 @@ class WebTestsSansMock {
     }
 
     @Test
-    public void recupererStatistiquesLanceExceptionSansMock()
+    public void recupererStatistiquesLanceExceptionSansMock() throws Exception
     {
         mockMvc.perform(get("/statistique")).andExpect(
             status().isInternalServerError()
@@ -63,7 +63,7 @@ class WebTestsSansMock {
     }
 
     @Test
-    public void creerUneVoitureSansMock()
+    public void creerUneVoitureSansMock() throws Exception
     {
         mockMvc.perform(post("/voiture")
                .contentType(MediaType.APPLICATION_JSON)
