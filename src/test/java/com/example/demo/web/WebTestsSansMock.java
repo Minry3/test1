@@ -71,3 +71,5 @@ class WebTestsSansMock {
                .andExpect(status().isOk());
     }
 }
+
+//test sonar
