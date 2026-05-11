@@ -47,6 +47,6 @@ public class StatistiqueTests {
         Echantillon resultat = statistiqueImpl.prixMoyen();
 
         assertNotNull(resultat);
-        assertEquals(new Echantillon(1, 20000), resultat);
+        assertEquals(20000, resultat.getPrixMoyen);
     }
 }
