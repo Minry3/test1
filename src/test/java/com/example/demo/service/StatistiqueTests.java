@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.data.Voiture;
 import com.example.demo.data.Echantillon;
-import com.example.demo.service;
+import com.example.demo.service.StatistiqueImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
